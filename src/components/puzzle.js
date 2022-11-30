@@ -43,6 +43,8 @@ const shuffle = (array) => {
   return array;
 };
 
+const options = shuffle(puzzleOptions);
+
 const fullSentence = `The occupation commenced with Imperial Japanese Army landings at Padang Pak Amat beach. 
 The word you are looking for is: "occupation"`;
 const partialSentence = `The __________ commenced with Imperial Japanese Army landings at Padang Pak Amat beach.`;
@@ -56,8 +58,6 @@ export default function Puzzle({ onClose, open }) {
   const [showWrong, setShowWrong] = useState(false);
 
   const { speak } = useSpeechSynthesis();
-
-  const options = shuffle(puzzleOptions);
 
   const handleSelectVal = (e) => {
     const newVal = value + e.target.value;
