@@ -112,7 +112,7 @@ export default function Reader() {
       </button>
       <SpeechKit open={openSpeechKit} onClose={() => setOpenSpeechKit(false)} />
       <button onClick={() => setOpenPuzzle(true)}>
-        Open Puzzle Assessment
+        Open Spelling Assessment
       </button>
       <Puzzle open={openPuzzle} onClose={() => setOpenPuzzle(false)} />
     </div>
