@@ -16,28 +16,38 @@ const useStyles = makeStyles({
   },
 });
 
-// const languageOptions = [
-//   //   { label: "Cambodian", value: "km-KH" },
-//   //   { label: "Deutsch", value: "de-DE" },
-//   { label: "English", value: "en-AU" },
-//   //   { label: "Farsi", value: "fa-IR" },
-//   //   { label: "Français", value: "fr-FR" },
-//   //   { label: "Italiano", value: "it-IT" },
-//   //   { label: "普通话 (中国大陆) - Mandarin", value: "zh" },
-//   //   { label: "Portuguese", value: "pt-BR" },
-//   //   { label: "Español", value: "es-MX" },
-//   //   { label: "Svenska - Swedish", value: "sv-SE" },
-// ];
-
 const puzzleOptions = [
-  { id: 1, value: "PEN" },
-  { id: 2, value: "JA" },
-  { id: 3, value: "JAH" },
+  { id: 1, value: "OC" },
+  { id: 2, value: "CU" },
+  { id: 3, value: "PA" },
+  { id: 4, value: "TION" },
 ];
 
-const instruction = ``;
+const shuffle = (array) => {
+  let currentIndex = array.length,
+    randomIndex;
 
-const correctAnswer = "PENJAJAH";
+  // While there remain elements to shuffle.
+  while (currentIndex != 0) {
+    // Pick a remaining element.
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    // And swap it with the current element.
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex],
+      array[currentIndex],
+    ];
+  }
+
+  return array;
+};
+
+const fullSentence = `The occupation commenced with Imperial Japanese Army landings at Padang Pak Amat beach. 
+The word you are looking for is: "occupation"`;
+const partialSentence = `The __________ commenced with Imperial Japanese Army landings at Padang Pak Amat beach.`;
+
+const correctAnswer = "OCCUPATION";
 
 export default function Puzzle({ onClose, open }) {
   const classes = useStyles();
@@ -47,17 +57,7 @@ export default function Puzzle({ onClose, open }) {
 
   const { speak } = useSpeechSynthesis();
 
-  const onEnd = () => {
-    if (value === correctAnswer) {
-      setShowCorrect(true);
-    } else {
-      setShowWrong(true);
-    }
-  };
-
-  const onResult = (result) => {
-    setValue(result);
-  };
+  const options = shuffle(puzzleOptions);
 
   const handleSelectVal = (e) => {
     const newVal = value + e.target.value;
@@ -91,12 +91,13 @@ export default function Puzzle({ onClose, open }) {
           <IconButton
             style={{ width: 32, height: 32, marginLeft: 16 }}
             onClick={() => {
-              speak({ text: correctAnswer });
+              speak({ text: fullSentence });
             }}
           >
             <Icon style={{ color: "white" }}>volume_up</Icon>
           </IconButton>
         </div>
+        <p>{partialSentence}</p>
         <div style={{ display: "flex" }}>
           <TextField
             id='output'
@@ -133,7 +134,7 @@ export default function Puzzle({ onClose, open }) {
             ) : null}
           </div>
         </div>
-        {puzzleOptions.map(({ id, value }) => (
+        {options.map(({ id, value }) => (
           <button key={id} value={value} onClick={handleSelectVal}>
             {value}
           </button>
