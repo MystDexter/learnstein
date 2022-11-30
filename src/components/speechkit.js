@@ -1,7 +1,14 @@
 import React, { Fragment, useState } from "react";
 import { useSpeechRecognition } from "react-speech-kit";
 
-import { Dialog, Paper, makeStyles, Icon, IconButton } from "@material-ui/core";
+import {
+  Dialog,
+  Paper,
+  makeStyles,
+  Icon,
+  IconButton,
+  TextField,
+} from "@material-ui/core";
 
 const useStyles = makeStyles({
   root: {
@@ -12,7 +19,7 @@ const useStyles = makeStyles({
 const languageOptions = [
   //   { label: "Cambodian", value: "km-KH" },
   //   { label: "Deutsch", value: "de-DE" },
-  { label: "English", value: "en-AU" },
+  { label: "English", value: "en-GB" },
   //   { label: "Farsi", value: "fa-IR" },
   //   { label: "Français", value: "fr-FR" },
   //   { label: "Italiano", value: "it-IT" },
@@ -26,7 +33,7 @@ const correctAnswer = "Japanese";
 
 export default function SpeechKit({ onClose, open }) {
   const classes = useStyles();
-  const [lang, setLang] = useState("en-AU");
+  const [lang, setLang] = useState("en-GB");
   const [value, setValue] = useState("");
   const [blocked, setBlocked] = useState(false);
   const [showCorrect, setShowCorrect] = useState(false);
@@ -114,11 +121,13 @@ export default function SpeechKit({ onClose, open }) {
                 </p>
               </div>
               {/* <label htmlFor='transcript'>Transcript</label> */}
-              <textarea
+              <TextField
                 id='transcript'
                 name='transcript'
                 placeholder='Waiting to take notes ...'
                 value={value}
+                variant='outlined'
+                multiline
                 rows={3}
                 disabled
                 style={{ display: "flex", width: "100%" }}
@@ -142,14 +151,14 @@ export default function SpeechKit({ onClose, open }) {
             alignItems: "center",
           }}
         >
-          {showCorrect ? (
+          {showCorrect && !showWrong ? (
             <IconButton>
               <Icon fontSize='large' style={{ color: "white" }}>
                 check
               </Icon>
             </IconButton>
           ) : null}
-          {showWrong ? (
+          {showWrong && !showCorrect ? (
             <IconButton style={{ background: "red", boxShadow: "none" }}>
               <Icon fontSize='large' style={{ color: "white" }}>
                 close

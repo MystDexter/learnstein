@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { article } from "./articles";
 import SpeechKit from "./speechkit";
+import Puzzle from "./puzzle";
 
 const splitTextAtCharIndex = (text, charIndex) => {
   const before = text.slice(0, charIndex);
@@ -35,6 +36,7 @@ export default function Reader() {
   const [refresh, setRefresh] = useState(0);
   const [rate, setRate] = useState(1.0);
   const [openSpeechKit, setOpenSpeechKit] = useState(false);
+  const [openPuzzle, setOpenPuzzle] = useState(false);
   const [state, setState] = useState({
     utterance: null,
     currentWord: "",
@@ -105,8 +107,14 @@ export default function Reader() {
         />
       </div>
       {renderHighlight(before, currentWord, after)}
-      <button onClick={() => setOpenSpeechKit(true)}>Open Assessment</button>
+      <button onClick={() => setOpenSpeechKit(true)}>
+        Open Speech Assessment
+      </button>
       <SpeechKit open={openSpeechKit} onClose={() => setOpenSpeechKit(false)} />
+      <button onClick={() => setOpenPuzzle(true)}>
+        Open Puzzle Assessment
+      </button>
+      <Puzzle open={openPuzzle} onClose={() => setOpenPuzzle(false)} />
     </div>
   );
 }
