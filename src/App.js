@@ -3,6 +3,7 @@ import logo from "./logo.svg";
 import "./App.css";
 
 import Reader from "./components/reader";
+import ImageMap from "./components/imagemap";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <h2>LearnStein</h2>
       </div>
       <Reader />
+      <ImageMap />
     </div>
   );
 }
