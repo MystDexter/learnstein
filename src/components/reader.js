@@ -34,7 +34,7 @@ const renderHighlight = (before, currentWord, after) => {
 };
 export default function Reader() {
   const [refresh, setRefresh] = useState(0);
-  const [rate, setRate] = useState(0.7);
+  const [rate, setRate] = useState(0.8);
   const [openSpeechKit, setOpenSpeechKit] = useState(false);
   const [openPuzzle, setOpenPuzzle] = useState(false);
   const [state, setState] = useState({
