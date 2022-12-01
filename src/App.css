@@ -1,8 +1,9 @@
-h2 { 
-    font-family: opendyslexic;
+h2,
+p {
+  font-family: opendyslexic;
 }
 
-button {
+/* button {
   margin: 10px;
   box-shadow: rgb(84, 163, 247) 0px 1px 0px 0px inset;
   background: linear-gradient(rgb(0, 125, 193) 5%, rgb(0, 97, 167) 100%) rgb(0, 125, 193);
@@ -23,7 +24,7 @@ button {
   background: linear-gradient(rgb(208, 69, 27) 5%, rgb(188, 51, 21) 100%) rgb(208, 69, 27);
   border: 1px solid rgb(148, 41, 17);
   text-shadow: rgb(133, 70, 41) 0px 1px 0px;
-}
+} */
 
 .App {
   text-align: center;
@@ -51,6 +52,10 @@ button {
 }
 
 @keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }

@@ -2,7 +2,10 @@ import React, { Fragment, useState, useEffect } from "react";
 import { useSpeechRecognition, useSpeechSynthesis } from "react-speech-kit";
 
 import {
+  Button,
   Dialog,
+  DialogTitle,
+  DialogContentText,
   Paper,
   makeStyles,
   TextField,
@@ -27,13 +30,10 @@ const shuffle = (array) => {
   let currentIndex = array.length,
     randomIndex;
 
-  // While there remain elements to shuffle.
   while (currentIndex != 0) {
-    // Pick a remaining element.
     randomIndex = Math.floor(Math.random() * currentIndex);
     currentIndex--;
 
-    // And swap it with the current element.
     [array[currentIndex], array[randomIndex]] = [
       array[randomIndex],
       array[currentIndex],
@@ -60,12 +60,13 @@ export default function Puzzle({ onClose, open }) {
   const { speak } = useSpeechSynthesis();
 
   const handleSelectVal = (e) => {
-    const newVal = value + e.target.value;
+    const newVal = value + e;
     setValue(newVal);
-    speak({ text: e.target.value });
+    speak({ text: e });
   };
 
   useEffect(() => {
+    console.log(value === correctAnswer);
     if (value === correctAnswer) {
       setShowCorrect(true);
     } else if (
@@ -85,20 +86,24 @@ export default function Puzzle({ onClose, open }) {
       fullWidth
       className={classes.root}
     >
+      <DialogTitle>Spelling Assessment</DialogTitle>
       <Paper style={{ padding: 16 }}>
         <div style={{ display: "flex", alignItems: "center" }}>
-          <p>Spell out the following word: </p>
+          <DialogContentText style={{ marginBottom: 0 }}>
+            Spell out the missing word:
+          </DialogContentText>
           <IconButton
-            style={{ width: 32, height: 32, marginLeft: 16 }}
+            color='primary'
+            style={{ width: 32, height: 32, marginLeft: 8 }}
             onClick={() => {
               speak({ text: fullSentence });
             }}
           >
-            <Icon style={{ color: "white" }}>volume_up</Icon>
+            <Icon>volume_up</Icon>
           </IconButton>
         </div>
         <p>{partialSentence}</p>
-        <div style={{ display: "flex" }}>
+        <div style={{ display: "flex", marginBottom: 16 }}>
           <TextField
             id='output'
             name='output'
@@ -119,14 +124,14 @@ export default function Puzzle({ onClose, open }) {
             }}
           >
             {showCorrect && !showWrong ? (
-              <IconButton>
+              <IconButton style={{ background: "green" }}>
                 <Icon fontSize='large' style={{ color: "white" }}>
                   check
                 </Icon>
               </IconButton>
             ) : null}
             {showWrong && !showCorrect ? (
-              <IconButton style={{ background: "red", boxShadow: "none" }}>
+              <IconButton style={{ background: "red" }}>
                 <Icon fontSize='large' style={{ color: "white" }}>
                   close
                 </Icon>
@@ -135,9 +140,15 @@ export default function Puzzle({ onClose, open }) {
           </div>
         </div>
         {options.map(({ id, value }) => (
-          <button key={id} value={value} onClick={handleSelectVal}>
+          <Button
+            variant='contained'
+            key={id}
+            value={value}
+            onClick={() => handleSelectVal(value)}
+            style={{ marginRight: 16 }}
+          >
             {value}
-          </button>
+          </Button>
         ))}
       </Paper>
     </Dialog>

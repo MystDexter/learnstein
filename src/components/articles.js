@@ -3,7 +3,6 @@ export const article = `Two factors of Japanese Invasion in Malaysia:
 2. Military strategy.
 
 Why did Japan invade Malaysia? 
-
 1. Raw materials resources exploitation 
 2. Military power in Malaya.
 

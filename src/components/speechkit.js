@@ -2,12 +2,16 @@ import React, { Fragment, useState } from "react";
 import { useSpeechRecognition } from "react-speech-kit";
 
 import {
+  Button,
   Dialog,
+  DialogTitle,
+  DialogContentText,
   Paper,
   makeStyles,
   Icon,
   IconButton,
   TextField,
+  Typography,
 } from "@material-ui/core";
 
 const useStyles = makeStyles({
@@ -20,6 +24,7 @@ const languageOptions = [
   //   { label: "Cambodian", value: "km-KH" },
   //   { label: "Deutsch", value: "de-DE" },
   { label: "English", value: "en-GB" },
+  { label: "Bahasa Melayu", value: "ms-MY" },
   //   { label: "Farsi", value: "fa-IR" },
   //   { label: "Français", value: "fr-FR" },
   //   { label: "Italiano", value: "it-IT" },
@@ -81,13 +86,14 @@ export default function SpeechKit({ onClose, open }) {
       aria-labelledby='simple-dialog-title'
       open={open}
       className={classes.root}
+      title='Speech Recognition'
     >
+      <DialogTitle>Speech Recognition</DialogTitle>
       <Paper style={{ display: "flex" }}>
         <form
           id='speech-recognition-form'
           style={{ width: "70%", padding: 16 }}
         >
-          <h2>Speech Recognition</h2>
           {!supported && (
             <p>
               Oh no, it looks like your browser doesn&#39;t support Speech
@@ -96,13 +102,14 @@ export default function SpeechKit({ onClose, open }) {
           )}
           {supported && (
             <Fragment>
-              <p>
+              <DialogContentText>
                 {`Click 'Listen' and start speaking.
                SpeechRecognition will provide a transcript of what you are saying.`}
-              </p>
+              </DialogContentText>
               <div style={{ display: "flex", marginBottom: 16 }}>
                 <label htmlFor='language'>Language</label>
                 <select
+                  style={{ marginLeft: 8 }}
                   form='speech-recognition-form'
                   id='language'
                   value={lang}
@@ -130,11 +137,18 @@ export default function SpeechKit({ onClose, open }) {
                 multiline
                 rows={3}
                 disabled
-                style={{ display: "flex", width: "100%" }}
+                style={{ display: "flex", width: "100%", marginBottom: 8 }}
               />
-              <button disabled={blocked} type='button' onClick={toggle}>
-                {listening ? "Stop" : "Listen"}
-              </button>
+              <Button
+                variant='contained'
+                disabled={blocked}
+                type='button'
+                onClick={toggle}
+                color={listening ? "secondary" : "primary"}
+                endIcon={<Icon>{listening ? "stop" : "mic"}</Icon>}
+              >
+                {listening ? "Done" : "Speak"}
+              </Button>
               {blocked && (
                 <p style={{ color: "red" }}>
                   The microphone is blocked for this site in your browser.
@@ -152,14 +166,14 @@ export default function SpeechKit({ onClose, open }) {
           }}
         >
           {showCorrect && !showWrong ? (
-            <IconButton>
+            <IconButton style={{ background: "green" }}>
               <Icon fontSize='large' style={{ color: "white" }}>
                 check
               </Icon>
             </IconButton>
           ) : null}
           {showWrong && !showCorrect ? (
-            <IconButton style={{ background: "red", boxShadow: "none" }}>
+            <IconButton style={{ background: "red" }}>
               <Icon fontSize='large' style={{ color: "white" }}>
                 close
               </Icon>

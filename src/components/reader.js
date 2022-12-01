@@ -1,5 +1,8 @@
 /* eslint-env browser */
 import React, { useEffect, useState } from "react";
+
+import { Button, Icon } from "@material-ui/core";
+
 import { article } from "./articles";
 import SpeechKit from "./speechkit";
 import Puzzle from "./puzzle";
@@ -46,7 +49,7 @@ export default function Reader() {
   });
 
   const { before, currentWord, after, utterance, synth } = state;
-  const { speaking } = synth;
+  const { speaking, paused } = synth;
 
   useEffect(() => {
     const u = new SpeechSynthesisUtterance();
@@ -58,6 +61,7 @@ export default function Reader() {
     u.lang = "en-gb";
     u.rate = rate;
     u.voice = filteredVoices[0];
+    u.onend = () => setRefresh(refresh + 1);
 
     u.onboundary = (e) => {
       setState({ ...state, ...splitTextAtCharIndex(u.text, e.charIndex) });
@@ -88,13 +92,27 @@ export default function Reader() {
 
   return (
     <div>
-      <button onClick={() => synth.speak(utterance)} disabled={speaking}>
-        Start
-      </button>
-      <button className='Stop' onClick={handleCancel}>
+      <Button
+        variant='contained'
+        color='primary'
+        onClick={() => synth.speak(utterance)}
+        disabled={speaking}
+        endIcon={<Icon style={{ color: "white" }}>play_arrow</Icon>}
+      >
+        Play
+      </Button>
+
+      <Button
+        variant='contained'
+        color='secondary'
+        className='Stop'
+        onClick={handleCancel}
+        style={{ marginLeft: 16 }}
+        endIcon={<Icon style={{ color: "white" }}>stop</Icon>}
+      >
         Stop
-      </button>
-      <div id='rate-control'>
+      </Button>
+      <div id='rate-control' style={{ marginTop: 16 }}>
         <label htmlFor='rate'>Speed:</label>
         <input
           type='range'
@@ -107,13 +125,22 @@ export default function Reader() {
         />
       </div>
       {renderHighlight(before, currentWord, after)}
-      <button onClick={() => setOpenSpeechKit(true)}>
-        Open Speech Assessment
-      </button>
-      <SpeechKit open={openSpeechKit} onClose={() => setOpenSpeechKit(false)} />
-      <button onClick={() => setOpenPuzzle(true)}>
-        Open Spelling Assessment
-      </button>
+      <div style={{ marginBottom: 16 }}>
+        <Button variant='contained' onClick={() => setOpenSpeechKit(true)}>
+          Open Speech Assessment
+        </Button>
+        <SpeechKit
+          open={openSpeechKit}
+          onClose={() => setOpenSpeechKit(false)}
+        />
+        <Button
+          variant='contained'
+          onClick={() => setOpenPuzzle(true)}
+          style={{ marginLeft: 16 }}
+        >
+          Open Spelling Assessment
+        </Button>
+      </div>
       <Puzzle open={openPuzzle} onClose={() => setOpenPuzzle(false)} />
     </div>
   );
