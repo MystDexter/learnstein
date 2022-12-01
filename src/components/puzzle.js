@@ -56,6 +56,7 @@ export default function Puzzle({ onClose, open }) {
   const [value, setValue] = useState("");
   const [showCorrect, setShowCorrect] = useState(false);
   const [showWrong, setShowWrong] = useState(false);
+  const [refresh, setRefresh] = useState(0);
 
   const { speak } = useSpeechSynthesis();
 
@@ -66,7 +67,6 @@ export default function Puzzle({ onClose, open }) {
   };
 
   useEffect(() => {
-    console.log(value === correctAnswer);
     if (value === correctAnswer) {
       setShowCorrect(true);
     } else if (
@@ -76,6 +76,12 @@ export default function Puzzle({ onClose, open }) {
       setShowWrong(true);
     }
   }, [value]);
+
+  useEffect(() => {
+    setValue("");
+    setShowCorrect(false);
+    setShowWrong(false);
+  }, [refresh]);
 
   return (
     <Dialog
@@ -94,7 +100,12 @@ export default function Puzzle({ onClose, open }) {
           </DialogContentText>
           <IconButton
             color='primary'
-            style={{ width: 32, height: 32, marginLeft: 8 }}
+            style={{
+              width: 32,
+              height: 32,
+              marginLeft: 8,
+              background: "aliceblue",
+            }}
             onClick={() => {
               speak({ text: fullSentence });
             }}
@@ -150,6 +161,9 @@ export default function Puzzle({ onClose, open }) {
             {value}
           </Button>
         ))}
+        <IconButton onClick={() => setRefresh(refresh + 1)}>
+          <Icon>refresh</Icon>
+        </IconButton>
       </Paper>
     </Dialog>
   );

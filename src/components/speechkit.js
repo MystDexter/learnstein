@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { useSpeechRecognition } from "react-speech-kit";
 
 import {
@@ -43,6 +43,13 @@ export default function SpeechKit({ onClose, open }) {
   const [blocked, setBlocked] = useState(false);
   const [showCorrect, setShowCorrect] = useState(false);
   const [showWrong, setShowWrong] = useState(false);
+  const [refresh, setRefresh] = useState(0);
+
+  useEffect(() => {
+    setValue("");
+    setShowCorrect(false);
+    setShowWrong(false);
+  }, [refresh]);
 
   const onEnd = () => {
     // You could do something here after listening has finished
@@ -149,6 +156,12 @@ export default function SpeechKit({ onClose, open }) {
               >
                 {listening ? "Done" : "Speak"}
               </Button>
+              <IconButton
+                onClick={() => setRefresh(refresh + 1)}
+                style={{ marginLeft: 8 }}
+              >
+                <Icon>refresh</Icon>
+              </IconButton>
               {blocked && (
                 <p style={{ color: "red" }}>
                   The microphone is blocked for this site in your browser.

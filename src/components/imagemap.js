@@ -5,7 +5,6 @@ import mapImg from "../assets/map.jpeg";
 import { useSpeechSynthesis } from "react-speech-kit";
 
 const click = (event) => {
-  console.log(event);
   return event;
 };
 
